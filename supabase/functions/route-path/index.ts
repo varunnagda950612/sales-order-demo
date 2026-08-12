@@ -3,8 +3,6 @@ const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
 const GOOGLE_MAPS_API_KEY = Deno.env.get("GOOGLE_MAPS_API_KEY") || "";
 const MAX_POINTS_PER_ROUTE_REQUEST = 25;
 const DEFAULT_ALLOWED_ORIGINS = [
-  "https://mm-sales-order-app.vercel.app",
-  "https://mm-sales-order-app-jx83.vercel.app",
   "http://localhost:3005",
   "http://127.0.0.1:3005",
   "http://localhost:3000",

@@ -6,8 +6,6 @@ const DEFAULT_GEOFENCE_METERS = 100;
 const MIN_GEOFENCE_METERS = 10;
 const MAX_GEOFENCE_METERS = 1000;
 const DEFAULT_ALLOWED_ORIGINS = [
-  "https://mm-sales-order-app.vercel.app",
-  "https://mm-sales-order-app-jx83.vercel.app",
   "http://localhost:3005",
   "http://127.0.0.1:3005",
   "http://localhost:3000",
