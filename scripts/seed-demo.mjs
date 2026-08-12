@@ -105,13 +105,13 @@ const users = [
 ];
 
 const routeDayPlans = [
-  { day: "sunday", area: "Demo Sunday Bazaar", baseLat: 26.8982, baseLng: 75.7698 },
-  { day: "monday", area: "Demo Monday Market", baseLat: 26.9055, baseLng: 75.7784 },
-  { day: "tuesday", area: "Demo Tuesday Circle", baseLat: 26.9131, baseLng: 75.7868 },
-  { day: "wednesday", area: "Demo Wednesday Central", baseLat: 26.9207, baseLng: 75.7952 },
-  { day: "thursday", area: "Demo Thursday Junction", baseLat: 26.9283, baseLng: 75.8036 },
-  { day: "friday", area: "Demo Friday North", baseLat: 26.9359, baseLng: 75.812 },
-  { day: "saturday", area: "Demo Saturday Avenue", baseLat: 26.9435, baseLng: 75.8204 },
+  { day: "sunday", area: "Demo Sunday Andheri West", locality: "Andheri West", baseLat: 19.1363, baseLng: 72.8296 },
+  { day: "monday", area: "Demo Monday Borivali West", locality: "Borivali West", baseLat: 19.229, baseLng: 72.857 },
+  { day: "tuesday", area: "Demo Tuesday Dadar West", locality: "Dadar West", baseLat: 19.018, baseLng: 72.8448 },
+  { day: "wednesday", area: "Demo Wednesday Ghatkopar East", locality: "Ghatkopar East", baseLat: 19.0856, baseLng: 72.908 },
+  { day: "thursday", area: "Demo Thursday Bandra West", locality: "Bandra West", baseLat: 19.0596, baseLng: 72.8295 },
+  { day: "friday", area: "Demo Friday Chembur", locality: "Chembur", baseLat: 19.0522, baseLng: 72.8997 },
+  { day: "saturday", area: "Demo Saturday Lower Parel", locality: "Lower Parel", baseLat: 18.9937, baseLng: 72.8307 },
 ];
 
 const shopNameParts = [
@@ -132,7 +132,7 @@ const routeShops = routeDayPlans.flatMap((plan, dayIndex) =>
       id: demoUuid("20000000", shopNumber),
       name: `${shopNamePart} - ${plan.area.replace("Demo ", "")}`,
       phone: String(9000000000 + shopNumber),
-      address: `${shopIndex + 1}, ${plan.area}, Jaipur demo route`,
+      address: `${shopIndex + 1}, ${plan.area}, ${plan.locality}, Mumbai 4000${String(shopIndex + 1).padStart(2, "0")}`,
       area: plan.area,
       visit_day: plan.day,
       assigned_to: ids.sales,

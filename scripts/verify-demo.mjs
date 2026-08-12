@@ -33,6 +33,12 @@ const routeVisitDays = [
   "friday",
   "saturday",
 ];
+const mumbaiBounds = {
+  minLat: 18.88,
+  maxLat: 19.31,
+  minLng: 72.75,
+  maxLng: 73.02,
+};
 
 async function readJson(path) {
   const response = await fetch(`${supabaseUrl}${path}`, { headers });
@@ -88,7 +94,7 @@ for (const [name, minimum] of Object.entries(requiredMinimums)) {
 }
 
 const [shops, schedules] = await Promise.all([
-  readJson("/rest/v1/shops?select=id,area,assigned_to"),
+  readJson("/rest/v1/shops?select=id,area,assigned_to,address,location_lat,location_lng"),
   readJson("/rest/v1/area_route_schedules?select=id,area,visit_day,sales_person_id"),
 ]);
 
@@ -107,6 +113,32 @@ for (const visitDay of routeVisitDays) {
   if (routeShopCount < 6) {
     throw new Error(
       `Demo verification failed: ${visitDay} route has ${routeShopCount} shop(s), expected at least 6.`,
+    );
+  }
+
+  const invalidMumbaiShop = shops.find((shop) => {
+    if (shop.assigned_to !== demoSalesId || !scheduledAreas.has(shop.area)) {
+      return false;
+    }
+
+    const latitude = Number(shop.location_lat);
+    const longitude = Number(shop.location_lng);
+    const hasMumbaiAddress = String(shop.address || "").toLowerCase().includes("mumbai");
+
+    return (
+      !hasMumbaiAddress ||
+      !Number.isFinite(latitude) ||
+      !Number.isFinite(longitude) ||
+      latitude < mumbaiBounds.minLat ||
+      latitude > mumbaiBounds.maxLat ||
+      longitude < mumbaiBounds.minLng ||
+      longitude > mumbaiBounds.maxLng
+    );
+  });
+
+  if (invalidMumbaiShop) {
+    throw new Error(
+      `Demo verification failed: ${visitDay} route shop ${invalidMumbaiShop.id} is not using a Mumbai address/GPS anchor.`,
     );
   }
 }
