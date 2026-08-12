@@ -3,6 +3,10 @@ import process from "node:process";
 const requiredConfirmation = "I_UNDERSTAND_THIS_IS_SYNTHETIC_DEMO_DATA";
 const demoProjectRefPattern = /^[a-z0-9]{20}$/;
 
+function demoUuid(groupPrefix, index) {
+  return `${groupPrefix}-0000-4000-8000-${String(index).padStart(12, "0")}`;
+}
+
 function requireEnvironment(name) {
   const value = process.env[name]?.trim();
   if (!value) throw new Error(`Missing ${name}.`);
@@ -32,23 +36,19 @@ if (process.env.DEMO_SEED_CONFIRMATION !== requiredConfirmation) {
 }
 
 const ids = {
-  admin: "10000000-0000-4000-8000-000000000001",
-  manager: "10000000-0000-4000-8000-000000000002",
-  sales: "10000000-0000-4000-8000-000000000003",
-  shop1: "20000000-0000-4000-8000-000000000001",
-  shop2: "20000000-0000-4000-8000-000000000002",
-  shop3: "20000000-0000-4000-8000-000000000003",
-  product1: "30000000-0000-4000-8000-000000000001",
-  product2: "30000000-0000-4000-8000-000000000002",
-  sku1: "40000000-0000-4000-8000-000000000001",
-  sku2: "40000000-0000-4000-8000-000000000002",
-  order1: "50000000-0000-4000-8000-000000000001",
-  order2: "50000000-0000-4000-8000-000000000002",
-  collectionGroup: "60000000-0000-4000-8000-000000000001",
-  collection: "60000000-0000-4000-8000-000000000002",
-  visit: "70000000-0000-4000-8000-000000000001",
-  target: "80000000-0000-4000-8000-000000000001",
-  schedule: "90000000-0000-4000-8000-000000000001",
+  admin: demoUuid("10000000", 1),
+  manager: demoUuid("10000000", 2),
+  sales: demoUuid("10000000", 3),
+  product1: demoUuid("30000000", 1),
+  product2: demoUuid("30000000", 2),
+  sku1: demoUuid("40000000", 1),
+  sku2: demoUuid("40000000", 2),
+  order1: demoUuid("50000000", 1),
+  order2: demoUuid("50000000", 2),
+  collectionGroup: demoUuid("60000000", 1),
+  collection: demoUuid("60000000", 2),
+  visit: demoUuid("70000000", 1),
+  target: demoUuid("80000000", 1),
 };
 
 async function request(path, { method = "GET", body, prefer } = {}) {
@@ -104,6 +104,62 @@ const users = [
   { id: ids.sales, email: "sales@sales-order-demo.invalid", fullName: "Aarav Demo", loginId: "sales", role: "sales" },
 ];
 
+const routeDayPlans = [
+  { day: "sunday", area: "Demo Sunday Bazaar", baseLat: 26.8982, baseLng: 75.7698 },
+  { day: "monday", area: "Demo Monday Market", baseLat: 26.9055, baseLng: 75.7784 },
+  { day: "tuesday", area: "Demo Tuesday Circle", baseLat: 26.9131, baseLng: 75.7868 },
+  { day: "wednesday", area: "Demo Wednesday Central", baseLat: 26.9207, baseLng: 75.7952 },
+  { day: "thursday", area: "Demo Thursday Junction", baseLat: 26.9283, baseLng: 75.8036 },
+  { day: "friday", area: "Demo Friday North", baseLat: 26.9359, baseLng: 75.812 },
+  { day: "saturday", area: "Demo Saturday Avenue", baseLat: 26.9435, baseLng: 75.8204 },
+];
+
+const shopNameParts = [
+  "Asha Provision",
+  "Bharat General Store",
+  "Chandan Kirana",
+  "Diya Super Mart",
+  "Ekta Retail",
+  "Falcon Mini Mart",
+  "Gauri Traders",
+];
+
+const routeShops = routeDayPlans.flatMap((plan, dayIndex) =>
+  shopNameParts.map((shopNamePart, shopIndex) => {
+    const shopNumber = dayIndex * shopNameParts.length + shopIndex + 1;
+
+    return {
+      id: demoUuid("20000000", shopNumber),
+      name: `${shopNamePart} - ${plan.area.replace("Demo ", "")}`,
+      phone: String(9000000000 + shopNumber),
+      address: `${shopIndex + 1}, ${plan.area}, Jaipur demo route`,
+      area: plan.area,
+      visit_day: plan.day,
+      assigned_to: ids.sales,
+      location_lat: Number((plan.baseLat + shopIndex * 0.0011).toFixed(6)),
+      location_lng: Number((plan.baseLng + shopIndex * 0.0013).toFixed(6)),
+      location_accuracy: 10 + shopIndex,
+      location_captured_at: timestamp,
+      created_by: ids.admin,
+    };
+  }),
+);
+
+const routeSchedules = routeDayPlans.map((plan, index) => ({
+  id: demoUuid("90000000", index + 1),
+  area: plan.area,
+  sales_person_id: ids.sales,
+  visit_day: plan.day,
+  frequency: "weekly",
+  start_date: monthStart,
+  created_by: ids.admin,
+}));
+
+const routeOrderShop = routeShops.find((shop) => shop.visit_day === "wednesday") || routeShops[0];
+const adhocOrderShop =
+  routeShops.find((shop) => shop.visit_day === "wednesday" && shop.id !== routeOrderShop.id) ||
+  routeShops[1];
+
 for (const user of users) await ensureAuthUser({ ...user, password: demoPassword });
 await upsert("profiles", users.map((user) => ({
   id: user.id, full_name: user.fullName, login_id: user.loginId, role: user.role,
@@ -118,23 +174,19 @@ await upsert("product_skus", [
   { id: ids.sku1, product_id: ids.product1, sku_size: "100 g", sku_code: "DEMO-TUR-100", rate: 42, mrp: 50, active: true },
   { id: ids.sku2, product_id: ids.product2, sku_size: "200 g", sku_code: "DEMO-COR-200", rate: 68, mrp: 80, active: true },
 ]);
-await upsert("shops", [
-  { id: ids.shop1, name: "Sunrise Demo Mart", phone: "9000000001", address: "Demo Market Road, Jaipur", area: "Demo Central", visit_day: "wednesday", assigned_to: ids.sales, location_lat: 26.9124, location_lng: 75.7873, location_accuracy: 12, location_captured_at: timestamp, created_by: ids.admin },
-  { id: ids.shop2, name: "Bluebird Sample Store", phone: "9000000002", address: "Sample Colony, Jaipur", area: "Demo Central", visit_day: "wednesday", assigned_to: ids.sales, location_lat: 26.9141, location_lng: 75.7901, location_accuracy: 15, location_captured_at: timestamp, created_by: ids.admin },
-  { id: ids.shop3, name: "Green Basket Test Shop", phone: "9000000003", address: "Test Avenue, Jaipur", area: "Demo North", visit_day: "friday", assigned_to: ids.sales, location_lat: 26.935, location_lng: 75.8002, location_accuracy: 18, location_captured_at: timestamp, created_by: ids.admin },
-]);
-await upsert("area_route_schedules", [{ id: ids.schedule, area: "Demo Central", sales_person_id: ids.sales, visit_day: "wednesday", frequency: "weekly", start_date: monthStart, created_by: ids.admin }]);
+await upsert("shops", routeShops);
+await upsert("area_route_schedules", routeSchedules);
 await upsert("sales_targets", [{ id: ids.target, sales_person_id: ids.sales, product_id: ids.product1, product_sku_id: ids.sku1, product_name: "Demo Turmeric Powder", sku_size: "100 g", sku_code: "DEMO-TUR-100", grams: 100, target_kg: 12, start_date: monthStart, end_date: monthEnd, created_by: ids.admin }]);
 await upsert("orders", [
-  { id: ids.order1, shop_id: ids.shop1, sales_person_id: ids.sales, sales_person_name: "Aarav Demo", order_type: "route", status: "placed", notes: "Synthetic route order", subtotal: 420, gst_rate: 0.05, gst_amount: 21, grand_total: 441, visit_lat: 26.9124, visit_lng: 75.7873, visit_accuracy: 12, visit_captured_at: timestamp, change_log: [], created_at: timestamp, updated_at: timestamp, client_updated_at: timestamp },
-  { id: ids.order2, shop_id: ids.shop2, sales_person_id: ids.sales, sales_person_name: "Aarav Demo", order_type: "adhoc", status: "placed", notes: "Synthetic ad hoc order", subtotal: 340, gst_rate: 0.05, gst_amount: 17, grand_total: 357, visit_lat: 26.9141, visit_lng: 75.7901, visit_accuracy: 15, visit_captured_at: timestamp, change_log: [], created_at: timestamp, updated_at: timestamp, client_updated_at: timestamp },
+  { id: ids.order1, shop_id: routeOrderShop.id, sales_person_id: ids.sales, sales_person_name: "Aarav Demo", order_type: "route", status: "placed", notes: "Synthetic route order", subtotal: 420, gst_rate: 0.05, gst_amount: 21, grand_total: 441, visit_lat: routeOrderShop.location_lat, visit_lng: routeOrderShop.location_lng, visit_accuracy: routeOrderShop.location_accuracy, visit_captured_at: timestamp, change_log: [], created_at: timestamp, updated_at: timestamp, client_updated_at: timestamp },
+  { id: ids.order2, shop_id: adhocOrderShop.id, sales_person_id: ids.sales, sales_person_name: "Aarav Demo", order_type: "adhoc", status: "placed", notes: "Synthetic ad hoc order", subtotal: 340, gst_rate: 0.05, gst_amount: 17, grand_total: 357, visit_lat: adhocOrderShop.location_lat, visit_lng: adhocOrderShop.location_lng, visit_accuracy: adhocOrderShop.location_accuracy, visit_captured_at: timestamp, change_log: [], created_at: timestamp, updated_at: timestamp, client_updated_at: timestamp },
 ]);
 await upsert("order_items", [
   { id: "51000000-0000-4000-8000-000000000001", order_id: ids.order1, product_id: ids.product1, product_sku_id: ids.sku1, product_name: "Demo Turmeric Powder", sku_size: "100 g", sku_code: "DEMO-TUR-100", rate: 42, mrp: 50, quantity: 10 },
   { id: "51000000-0000-4000-8000-000000000002", order_id: ids.order2, product_id: ids.product2, product_sku_id: ids.sku2, product_name: "Demo Coriander Powder", sku_size: "200 g", sku_code: "DEMO-COR-200", rate: 68, mrp: 80, quantity: 5 },
 ]);
-await upsert("visit_proofs", [{ id: ids.visit, shop_id: ids.shop1, order_id: ids.order1, sales_person_id: ids.sales, latitude: 26.9124, longitude: 75.7873, accuracy: 12, distance_meters: 8, captured_at: timestamp, visit_type: "order_started", client_event_id: ids.visit }]);
-await upsert("collections", [{ id: ids.collection, client_group_id: ids.collectionGroup, shop_id: ids.shop1, sales_person_id: ids.sales, collection_type: "route", status: "placed", notes: "Synthetic payment", bill_date: today, bill_number: "DEMO-BILL-001", amount: 250, discount: 10, replacement: 0, payment_mode: "upi", created_at: timestamp, updated_at: timestamp, client_updated_at: timestamp }]);
+await upsert("visit_proofs", [{ id: ids.visit, shop_id: routeOrderShop.id, order_id: ids.order1, sales_person_id: ids.sales, latitude: routeOrderShop.location_lat, longitude: routeOrderShop.location_lng, accuracy: routeOrderShop.location_accuracy, distance_meters: 8, captured_at: timestamp, visit_type: "order_started", client_event_id: ids.visit }]);
+await upsert("collections", [{ id: ids.collection, client_group_id: ids.collectionGroup, shop_id: routeOrderShop.id, sales_person_id: ids.sales, collection_type: "route", status: "placed", notes: "Synthetic payment", bill_date: today, bill_number: "DEMO-BILL-001", amount: 250, discount: 10, replacement: 0, payment_mode: "upi", created_at: timestamp, updated_at: timestamp, client_updated_at: timestamp }]);
 
 console.log(`Synthetic demo data seeded into ${expectedProjectRef}.`);
 console.log(`Demo logins: admin, manager, sales / password: ${demoPassword}`);

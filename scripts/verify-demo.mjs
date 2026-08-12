@@ -23,6 +23,17 @@ const headers = {
   Authorization: `Bearer ${serverKey}`,
 };
 
+const demoSalesId = "10000000-0000-4000-8000-000000000003";
+const routeVisitDays = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+];
+
 async function readJson(path) {
   const response = await fetch(`${supabaseUrl}${path}`, { headers });
 
@@ -59,7 +70,7 @@ counts.auth_users = Array.isArray(authResult.users) ? authResult.users.length : 
 const requiredMinimums = {
   auth_users: 3,
   profiles: 3,
-  shops: 3,
+  shops: 49,
   products: 2,
   product_skus: 2,
   orders: 2,
@@ -67,12 +78,36 @@ const requiredMinimums = {
   visit_proofs: 1,
   collections: 1,
   sales_targets: 1,
-  area_route_schedules: 1,
+  area_route_schedules: 7,
 };
 
 for (const [name, minimum] of Object.entries(requiredMinimums)) {
   if ((counts[name] || 0) < minimum) {
     throw new Error(`Demo verification failed: ${name} has ${counts[name] || 0}, expected at least ${minimum}.`);
+  }
+}
+
+const [shops, schedules] = await Promise.all([
+  readJson("/rest/v1/shops?select=id,area,assigned_to"),
+  readJson("/rest/v1/area_route_schedules?select=id,area,visit_day,sales_person_id"),
+]);
+
+for (const visitDay of routeVisitDays) {
+  const scheduledAreas = new Set(
+    schedules
+      .filter((schedule) => schedule.visit_day === visitDay && schedule.sales_person_id === demoSalesId)
+      .map((schedule) => schedule.area),
+  );
+  const routeShopCount = shops.filter(
+    (shop) => shop.assigned_to === demoSalesId && scheduledAreas.has(shop.area),
+  ).length;
+
+  counts[`route_${visitDay}_shops`] = routeShopCount;
+
+  if (routeShopCount < 6) {
+    throw new Error(
+      `Demo verification failed: ${visitDay} route has ${routeShopCount} shop(s), expected at least 6.`,
+    );
   }
 }
 
