@@ -1,0 +1,82 @@
+import process from "node:process";
+
+const expectedProjectRef = process.env.NEXT_PUBLIC_DEMO_SUPABASE_PROJECT_REF?.trim();
+const supabaseUrl = process.env.SUPABASE_URL?.trim().replace(/\/$/, "");
+const serverKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+
+if (process.env.NEXT_PUBLIC_APP_VARIANT !== "demo") {
+  throw new Error("Refusing verification: NEXT_PUBLIC_APP_VARIANT must be demo.");
+}
+
+if (!expectedProjectRef || !supabaseUrl || !serverKey) {
+  throw new Error("Missing demo verification environment variables.");
+}
+
+const actualProjectRef = new URL(supabaseUrl).hostname.split(".")[0];
+
+if (actualProjectRef !== expectedProjectRef) {
+  throw new Error("Refusing verification: Supabase URL does not match the explicit demo project ref.");
+}
+
+const headers = {
+  apikey: serverKey,
+  Authorization: `Bearer ${serverKey}`,
+};
+
+async function readJson(path) {
+  const response = await fetch(`${supabaseUrl}${path}`, { headers });
+
+  if (!response.ok) {
+    throw new Error(`Verification request failed (${response.status}): ${await response.text()}`);
+  }
+
+  return response.json();
+}
+
+const tableNames = [
+  "profiles",
+  "shops",
+  "products",
+  "product_skus",
+  "orders",
+  "order_items",
+  "visit_proofs",
+  "collections",
+  "sales_targets",
+  "area_route_schedules",
+];
+
+const counts = {};
+
+for (const tableName of tableNames) {
+  const rows = await readJson(`/rest/v1/${tableName}?select=id`);
+  counts[tableName] = Array.isArray(rows) ? rows.length : 0;
+}
+
+const authResult = await readJson("/auth/v1/admin/users?page=1&per_page=50");
+counts.auth_users = Array.isArray(authResult.users) ? authResult.users.length : 0;
+
+const requiredMinimums = {
+  auth_users: 3,
+  profiles: 3,
+  shops: 3,
+  products: 2,
+  product_skus: 2,
+  orders: 2,
+  order_items: 2,
+  visit_proofs: 1,
+  collections: 1,
+  sales_targets: 1,
+  area_route_schedules: 1,
+};
+
+for (const [name, minimum] of Object.entries(requiredMinimums)) {
+  if ((counts[name] || 0) < minimum) {
+    throw new Error(`Demo verification failed: ${name} has ${counts[name] || 0}, expected at least ${minimum}.`);
+  }
+}
+
+console.log(`Verified synthetic demo data in ${expectedProjectRef}.`);
+Object.entries(counts)
+  .sort(([left], [right]) => left.localeCompare(right))
+  .forEach(([name, count]) => console.log(`${name}=${count}`));

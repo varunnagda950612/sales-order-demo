@@ -23,6 +23,9 @@ for each row execute function public.set_updated_at();
 
 alter table public.sales_targets enable row level security;
 
+drop policy if exists "sales_targets_select_admin_or_owner" on public.sales_targets;
+drop policy if exists "sales_targets_admin_all" on public.sales_targets;
+
 create policy "sales_targets_select_admin_or_owner"
 on public.sales_targets for select
 to authenticated

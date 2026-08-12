@@ -10,7 +10,8 @@
     "lint": "eslint app components features lib services types --max-warnings=0",
     "test": "npm run lint && npm run typecheck",
     "typecheck": "tsc --noEmit",
-    "seed:demo": "node scripts/seed-demo.mjs"
+    "seed:demo": "node scripts/seed-demo.mjs",
+    "verify:demo": "node scripts/verify-demo.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "latest",
