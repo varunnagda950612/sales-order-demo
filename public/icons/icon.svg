@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img" aria-label="Manish Masala icon">
+  <rect width="192" height="192" rx="36" fill="#b42318" />
+  <circle cx="96" cy="76" r="28" fill="#facc15" />
+  <path d="M44 139c20-24 84-24 104 0" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" />
+  <text x="96" y="116" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#fff">MM</text>
+</svg>

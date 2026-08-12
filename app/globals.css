@@ -1,0 +1,170 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+:root {
+  --color-brand: #ea580c;
+  --color-brand-strong: #c2410c;
+  --color-ink: #1c1917;
+  --color-page: #fafaf9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button:not(:disabled),
+input[type="button"]:not(:disabled),
+input[type="submit"]:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
+button:disabled,
+input[type="button"]:disabled,
+input[type="submit"]:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+/* button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-brand-strong);
+  outline-offset: 2px;
+} */
+
+.route-leaflet-pin {
+  display: grid;
+  height: 42px;
+  line-height: 1;
+  place-items: start center;
+  background: transparent;
+  border: 0;
+  width: 30px;
+}
+
+.route-leaflet-pin span {
+  align-items: center;
+  background: #11844f;
+  border: 2px solid #ffffff;
+  border-radius: 9999px 9999px 9999px 0;
+  box-shadow: 0 8px 18px rgb(17 132 79 / 0.26);
+  color: #ffffff;
+  display: flex;
+  font-size: 13px;
+  font-weight: 800;
+  height: 30px;
+  justify-content: center;
+  position: relative;
+  transform: rotate(-45deg);
+  width: 30px;
+}
+
+.route-leaflet-pin span::before {
+  content: attr(data-index);
+  display: block;
+  transform: rotate(45deg);
+}
+
+.route-leaflet-pin span {
+  font-size: 0;
+}
+
+.route-leaflet-pin span::before {
+  font-size: 0.72rem;
+}
+
+.leaflet-marker-icon.route-leaflet-pin:hover span,
+.leaflet-marker-icon.route-leaflet-pin:focus span,
+.leaflet-marker-icon.route-leaflet-pin:focus-visible span,
+.leaflet-marker-icon.route-leaflet-pin.route-leaflet-pin-active span {
+  background: #f47d21 !important;
+  border-color: #ffffff;
+  box-shadow: 0 10px 22px #f47d2157, 0 0 0 4px #f47d2129;
+  color: #ffffff;
+  opacity: 1;
+}
+
+.gps-route-popup-kicker {
+  color: #475569;
+  font-size: 12px;
+  margin: 0;
+}
+
+.gps-route-popup-title {
+  color: #111827;
+  font-size: 14px;
+  font-weight: 800;
+  margin: 2px 0 10px;
+}
+
+.gps-route-popup-meta {
+  color: #334155;
+  font-size: 13px;
+  margin: 0 0 12px;
+}
+
+.gps-route-popup-link {
+  color: #0369a1;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.manish-logo-loader-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 820;
+  stroke-dashoffset: 820;
+  animation: manish-logo-border-run 2.2s ease-in-out infinite;
+}
+
+.manish-logo-loader-line-yellow {
+  stroke: #fff000;
+  stroke-width: 18;
+}
+
+.manish-logo-loader-line-orange {
+  stroke: #f5822a;
+  stroke-width: 14;
+  animation-delay: 0.18s;
+}
+
+@keyframes manish-logo-border-run {
+  0% {
+    stroke-dashoffset: 820;
+    opacity: 0.25;
+  }
+
+  35%,
+  65% {
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: -820;
+    opacity: 0.25;
+  }
+}
