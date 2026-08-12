@@ -32,8 +32,8 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
         <div className="p-6 sm:p-7">
           <Image
-            src="/icons/manish-logo.png"
-            alt="Manish Masala"
+            src="/icons/demo-logo.svg"
+            alt="Sales Order Demo"
             width={280}
             height={124}
             priority
@@ -42,10 +42,10 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
           <div className="mt-5 text-left">
             <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 text-xs font-bold text-orange-700">
-              PURE SINCE 1976
+              SAFE SANDBOX
             </span>
-            <h1 className="mt-5 text-3xl font-bold text-stone-900">Manish Masala</h1>
-            <p className="mt-1 text-base text-stone-600">Sales order and shop visit tracking</p>
+            <h1 className="mt-5 text-3xl font-bold text-stone-900">Sales Order Demo</h1>
+            <p className="mt-1 text-base text-stone-600">Synthetic sales, orders, collections, and route data</p>
           </div>
 
           {localMode ? (

@@ -1,4 +1,6 @@
-# Project Handoff: Manish Masala Sales Order App
+# Project Handoff: Sales Order Demo
+
+> Demo safety override (2026-08-12): This repository is the isolated `sales-order-demo` application. Historical notes below describe inherited architecture only. They are not authorization to connect to, read from, seed from, or modify any production project. Use only synthetic demo records and the separate demo GitHub, Supabase, and Vercel projects. The previous live-route seed UI was removed, and Supabase mode now requires an exact explicit demo project-reference match.
 
 ## 1. Project Overview
 

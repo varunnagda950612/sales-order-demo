@@ -1,12 +1,12 @@
 {
-  "name": "Manish Masala Sales Orders",
-  "short_name": "MM Orders",
+  "name": "Sales Order Demo",
+  "short_name": "Order Demo",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#fff7df",
   "theme_color": "#fff3c4",
-  "description": "Internal sales order and geotagged shop visit app for Manish Masala.",
+  "description": "Sales order and geotagged shop visit demo using synthetic data only.",
   "icons": [
     {
       "src": "/icons/icon-192.png",

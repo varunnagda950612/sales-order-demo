@@ -154,7 +154,6 @@ export function SalesLocalDashboard({
           routeWorkMessage={routeWorkMessage}
           onVisitOutcomeChanged={() => setVisitsRefreshKey((value) => value + 1)}
           onOrderSaved={() => setOrdersRefreshKey((value) => value + 1)}
-          onSeeded={() => setShopsRefreshKey((value) => value + 1)}
           onShopAdded={() => setShopsRefreshKey((value) => value + 1)}
           writesEnabled={writesEnabled}
           mutationUiEnabled={mutationUiEnabled}

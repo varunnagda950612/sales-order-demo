@@ -205,8 +205,8 @@ function MobileNavigationDrawer({
         <div className="flex items-center gap-3 border-b border-stone-200 px-4 py-4">
           <MobileMenuToggle isOpen onClick={onClose} />
           <Image
-            src="/icons/manish-logo.png"
-            alt="Manish Masala"
+            src="/icons/demo-logo.svg"
+            alt="Sales Order Demo"
             width={176}
             height={72}
             priority
@@ -314,8 +314,8 @@ export function RoleDashboard({ profile, children }: RoleDashboardProps) {
         <aside className="hidden h-screen flex-col border-r border-stone-200 bg-white lg:sticky lg:top-0 lg:flex">
           <div className="border-b border-stone-200 px-5 py-5">
             <Image
-              src="/icons/manish-logo.png"
-              alt="Manish Masala"
+              src="/icons/demo-logo.svg"
+              alt="Sales Order Demo"
               width={220}
               height={92}
               priority
@@ -360,8 +360,8 @@ export function RoleDashboard({ profile, children }: RoleDashboardProps) {
                   />
                 </div>
                 <Image
-                  src="/icons/manish-logo.png"
-                  alt="Manish Masala"
+                  src="/icons/demo-logo.svg"
+                  alt="Sales Order Demo"
                   width={176}
                   height={72}
                   priority

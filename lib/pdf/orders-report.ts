@@ -225,7 +225,7 @@ export function buildOrdersPdf({ orders, shops, titleParts }: BuildOrderPdfInput
     commands = [];
     column = 0;
     y = top;
-    drawText("Manish Masala Orders", margin, pageHeight - margin, 14, true);
+    drawText("Sales Order Demo Orders", margin, pageHeight - margin, 14, true);
     drawText(`${titleParts.join(" | ")} | ${pdfOrders.length} order(s)`, margin, pageHeight - margin - 14, 9, true);
   }
 

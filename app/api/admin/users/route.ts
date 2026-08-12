@@ -4,7 +4,7 @@ import { getCurrentProfile } from "@/lib/auth/profile";
 import { getSupabaseServerEnv } from "@/lib/supabase/env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-const loginEmailDomain = process.env.LOGIN_EMAIL_DOMAIN || "manishmasala.local";
+const loginEmailDomain = process.env.LOGIN_EMAIL_DOMAIN || "sales-order-demo.invalid";
 const managedRoles = new Set(["admin", "manager", "sales"]);
 const defaultGeofenceMeters = 100;
 const minimumGeofenceMeters = 10;

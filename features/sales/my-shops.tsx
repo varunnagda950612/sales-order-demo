@@ -20,7 +20,6 @@ import {
 } from "./check-in";
 import { LocalCollectionEntry } from "./local-collection-entry";
 import { LocalOrderEntry } from "./local-order-entry";
-import { SeedLocalRoute } from "./seed-local-route";
 import { getGoogleMapsDirectionsUrl } from "@/lib/maps/google";
 import {
   readSalesRouteSnapshot,
@@ -59,7 +58,6 @@ type SalesMyShopsProps = {
   routeWorkMessage?: string;
   onVisitOutcomeChanged: () => void;
   onOrderSaved: () => void;
-  onSeeded: () => void;
   onShopAdded: () => void;
   writesEnabled?: boolean;
   mutationUiEnabled?: boolean;
@@ -961,7 +959,6 @@ export function SalesMyShops({
   routeWorkMessage = "",
   onVisitOutcomeChanged,
   onOrderSaved,
-  onSeeded,
   onShopAdded,
   writesEnabled = true,
   mutationUiEnabled = writesEnabled,
@@ -979,7 +976,7 @@ export function SalesMyShops({
       ? `Loaded local route snapshot saved at ${snapshot.savedAt}.`
       : "No local route snapshot found yet.";
   });
-  const [activeRouteData, setActiveRouteData] = useState(() => {
+  const [activeRouteData] = useState(() => {
     if (!localMode) {
       return routeData;
     }
@@ -1112,18 +1109,6 @@ export function SalesMyShops({
     }
   }
 
-  function handleSeeded() {
-    const snapshot = readSalesRouteSnapshot(salesPersonId);
-
-    if (!snapshot) {
-      return;
-    }
-
-    setActiveRouteData(snapshot.routeData);
-    setShops(applyLocalCheckIns(snapshot.routeData.shops, salesPersonId));
-    onSeeded();
-  }
-
   function handleShopAdded() {
     onShopAdded();
     if (!localMode) {
@@ -1230,13 +1215,6 @@ export function SalesMyShops({
             <p className="mt-2 font-medium">{initialSnapshotMessage}</p>
           ) : null}
         </div>
-      ) : null}
-
-      {localMode ? (
-        <SeedLocalRoute
-          localSalesPersonId={salesPersonId}
-          onSeeded={handleSeeded}
-        />
       ) : null}
 
       {!routeWorkAllowed ? (

@@ -12,7 +12,7 @@ import { getDashboardPath } from "@/lib/auth/routing";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 import type { AppRole } from "@/types/domain";
 
-const loginEmailDomain = "manishmasala.local";
+const loginEmailDomain = "sales-order-demo.invalid";
 
 function toLoginEmail(loginId: string) {
   return `${loginId.trim().toLowerCase()}@${loginEmailDomain}`;

@@ -162,7 +162,7 @@ export function buildDayLogPdf({ rows, titleParts, summary }: BuildDayLogPdfInpu
 
     commands = [];
     y = top;
-    drawText("Manish Masala Day Log", margin, pageHeight - margin, 16, true);
+    drawText("Sales Order Demo Day Log", margin, pageHeight - margin, 16, true);
     drawText(
       `${titleParts.join(" | ")} | ${rows.length} row(s)`,
       margin,

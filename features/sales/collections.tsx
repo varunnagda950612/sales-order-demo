@@ -598,7 +598,7 @@ export function SalesCollections({
     if (navigator.share && navigator.canShare?.({ files: [file] })) {
       try {
         await navigator.share({
-          title: "Manish Masala Collections",
+          title: "Sales Order Demo Collections",
           text: "Collection details",
           files: [file],
         });
