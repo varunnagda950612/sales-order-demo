@@ -9,10 +9,10 @@ function LoaderContent() {
     <div className="relative w-[min(76vw,520px)]">
       <Image
         className="h-auto w-full object-contain"
-        src="/icons/demo-logo.svg"
-        alt="Sales Order Demo"
-        width={520}
-        height={360}
+        src="/icons/manish-logo-app.png"
+        alt="Manish Masala Sales Order Demo"
+        width={1422}
+        height={951}
         priority
       />
 

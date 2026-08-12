@@ -7,8 +7,8 @@ import { DemoSafetyBanner } from "@/components/demo-safety-banner";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Sales Order Demo",
-  description: "Demo sales, route, order, collection, and target management app using synthetic data.",
+  title: "Manish Masala Sales Order Demo",
+  description: "Manish Masala sales, route, order, collection, and target management demo using synthetic data.",
   manifest: "/manifest.webmanifest",
 };
 

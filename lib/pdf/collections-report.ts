@@ -126,7 +126,7 @@ export function buildCollectionsPdf({
     }
     commands = [];
     y = top;
-    drawText("Sales Order Demo Collections", margin, pageHeight - margin, 14, true);
+    drawText("Manish Masala Demo Collections", margin, pageHeight - margin, 14, true);
     drawText(
       rowText(
         `${titleParts.join(" | ")} | ${rows.length} bill row${rows.length === 1 ? "" : "s"}`,

@@ -205,12 +205,12 @@ function MobileNavigationDrawer({
         <div className="flex items-center gap-3 border-b border-stone-200 px-4 py-4">
           <MobileMenuToggle isOpen onClick={onClose} />
           <Image
-            src="/icons/demo-logo.svg"
-            alt="Sales Order Demo"
-            width={176}
-            height={72}
+            src="/icons/manish-logo-app.png"
+            alt="Manish Masala Sales Order Demo"
+            width={1422}
+            height={951}
             priority
-            className="h-10 w-auto object-contain object-left"
+            className="h-12 w-auto object-contain object-left"
           />
         </div>
 
@@ -314,12 +314,12 @@ export function RoleDashboard({ profile, children }: RoleDashboardProps) {
         <aside className="hidden h-screen flex-col border-r border-stone-200 bg-white lg:sticky lg:top-0 lg:flex">
           <div className="border-b border-stone-200 px-5 py-5">
             <Image
-              src="/icons/demo-logo.svg"
-              alt="Sales Order Demo"
-              width={220}
-              height={92}
+              src="/icons/manish-logo-app.png"
+              alt="Manish Masala Sales Order Demo"
+              width={1422}
+              height={951}
               priority
-              className="h-14 w-auto max-w-full object-contain object-left"
+              className="h-20 w-auto max-w-full object-contain object-left"
             />
           </div>
 
@@ -360,12 +360,12 @@ export function RoleDashboard({ profile, children }: RoleDashboardProps) {
                   />
                 </div>
                 <Image
-                  src="/icons/demo-logo.svg"
-                  alt="Sales Order Demo"
-                  width={176}
-                  height={72}
+                  src="/icons/manish-logo-app.png"
+                  alt="Manish Masala Sales Order Demo"
+                  width={1422}
+                  height={951}
                   priority
-                  className="h-9 w-auto object-contain object-left sm:h-10 lg:hidden"
+                  className="h-11 w-auto object-contain object-left sm:h-12 lg:hidden"
                 />
                 <div className="min-w-0">
                   <p className="text-xs font-semibold uppercase tracking-wide text-orange-700">

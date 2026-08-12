@@ -1,12 +1,12 @@
 {
-  "name": "Sales Order Demo",
-  "short_name": "Order Demo",
+  "name": "Manish Masala Sales Order Demo",
+  "short_name": "Manish Demo",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#fff7df",
   "theme_color": "#fff3c4",
-  "description": "Sales order and geotagged shop visit demo using synthetic data only.",
+  "description": "Manish Masala sales order and geotagged shop visit demo using synthetic data only.",
   "icons": [
     {
       "src": "/icons/icon-192.png",
